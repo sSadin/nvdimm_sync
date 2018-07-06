@@ -88,6 +88,7 @@ void chunk_delete_locked(chunk_t *chunk)
 }
 EXPORT_SYMBOL(chunk_delete_locked);
 
+#if 0 // not used
 static void chunk_delete_all(void)
 {
         chunk_t *n, *tmp;
@@ -98,6 +99,7 @@ static void chunk_delete_all(void)
         }
         mutex_unlock(&chunk_list.mtx);
 }
+#endif
 /* --- chunk API end --- */
 
 int nvdimm_dev_probe(struct platform_device *pdev)
