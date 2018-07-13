@@ -3,6 +3,13 @@
 
 #include "nvdimm_export.h"
 
+//repl_state 
+enum {
+	CHUNK_STATE_NEW = 0,
+	CHUNK_STATE_PROCSAVE,
+	CHUNK_STATE_SAVED
+}repl_state;
+
 extern int nvdimm_dev_probe(struct platform_device *);
 extern int nvdimm_dev_remove(struct platform_device *);
 extern void nvdimm_dev_release(struct device *);

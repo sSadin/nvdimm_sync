@@ -8,6 +8,6 @@ default: clean
 debug: MY_CFLAGS=-DDEBUG
 debug: clean
 	make -C $(KDIR) M=$(shell pwd) EXTRA_CFLAGS="$(MY_CFLAGS)" modules
-	
+
 clean:
-	rm -rf *.ko *.cmd *.o .driver.* Module.symvers *.mod.c .tmp_versions *.order
+	rm -rf *.ko *.cmd *.o .driver.* Module.symvers *.mod.c .tmp_versions *.order .*.cmd

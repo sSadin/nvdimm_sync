@@ -6,6 +6,7 @@
 typedef struct chunk {
         u32 magic;
         u8 recovered;
+	u8 repl_state;
         dma_addr_t paddr;
         size_t size;
         struct list_head list;
