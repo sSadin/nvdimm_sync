@@ -13,6 +13,8 @@ enum {
 extern int nvdimm_dev_probe(struct platform_device *);
 extern int nvdimm_dev_remove(struct platform_device *);
 extern void nvdimm_dev_release(struct device *);
+extern int nvdimm_rsv_dev_probe(struct platform_device *);
+extern int nvdimm_rsv_dev_remove(struct platform_device *);
 extern void nvdimm_rsv_dev_release(struct device *);
 
 struct platform_device nvdimm_dev = {
@@ -58,8 +60,8 @@ struct platform_driver nvdimm_drv = {
 };
 
 struct platform_driver nvdimm_drv_rsv = {
-        .probe = nvdimm_dev_probe,
-        .remove = nvdimm_dev_remove,
+        .probe = nvdimm_rsv_dev_probe,
+        .remove = nvdimm_rsv_dev_remove,
         .driver = {
                 .name = KBUILD_MODNAME "_rsv",
         }
@@ -68,6 +70,8 @@ struct platform_driver nvdimm_drv_rsv = {
 struct priv {
         struct resource *res;
         struct platform_device *pdev;
+        struct resource *res_rsv;
+        struct platform_device *pdev_rsv;
         u8 repaired;
 } _priv = { 0 }, *priv = &_priv;
 

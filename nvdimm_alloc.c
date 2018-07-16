@@ -173,6 +173,29 @@ int nvdimm_dev_remove(struct platform_device *pdev)
     return 0;
 }
 
+int nvdimm_rsv_dev_probe(struct platform_device *pdev)
+{
+  struct resource *mem = NULL;
+  dbg("nvdimm_rsv_dev_probe\n");
+
+  mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+  if (!mem) {
+          dev_err(&pdev->dev, "platform_get_resource err\n");
+          return -EINVAL;
+  }
+
+  priv->pdev_rsv = pdev;
+  priv->res_rsv = mem;
+  priv->repaired = 0;
+  return 0;
+}
+
+int nvdimm_rsv_dev_remove(struct platform_device *pdev)
+{
+  dbg("nvdimm_rsv_dev_remove\n");
+  return 0;
+}
+
 void nvdimm_dev_release(struct device *dev)
 {
 }
