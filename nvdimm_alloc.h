@@ -26,7 +26,7 @@ struct platform_device nvdimm_dev = {
                 {
                         .name = "baum_nvdimm",
                         .start = 0x1080000000,
-                        .end = 0x93FFFFFFF // 0x127fffffff, // 940000000
+                        .end = 0x93FFFFFFF, // 0x127fffffff, // 940000000
                         .flags = IORESOURCE_MEM
                 }
         }
@@ -34,7 +34,7 @@ struct platform_device nvdimm_dev = {
 
 struct platform_device nvdimm_dev_rsv = {
         .name = KBUILD_MODNAME "_rsv",
-        .id = PLATFORM_DEVID_NONE "_rsv",
+        .id = PLATFORM_DEVID_NONE,
         .dev = {
                 .release = nvdimm_rsv_dev_release,
         },
@@ -43,7 +43,7 @@ struct platform_device nvdimm_dev_rsv = {
                 {
                         .name = "baum_nvdimm_rsv",
                         .start = 940000000,
-                        .end = 0x127fffffff // 0x127fffffff, // 940000000
+                        .end = 0x127fffffff, // 0x127fffffff, // 940000000
                         .flags = IORESOURCE_MEM
                 }
         }
