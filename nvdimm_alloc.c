@@ -21,10 +21,10 @@
 
 static unsigned long nvdimm_usage = 0;
 
-#if 0
-void nvdimm_recover(void);
-struct list_head *nvdimm_get_list_head(void);
-#endif
+// #if 0
+// void nvdimm_recover(void);
+// struct list_head *nvdimm_get_list_head(void);
+// #endif
 
 /* --- chunk API start --- */
 void *chunk_get_data_addr(chunk_t *chunk)
@@ -88,18 +88,18 @@ void chunk_delete_locked(chunk_t *chunk)
 }
 EXPORT_SYMBOL(chunk_delete_locked);
 
-#if 0 // not used
-static void chunk_delete_all(void)
-{
-        chunk_t *n, *tmp;
+// #if 0 // not used
+// static void chunk_delete_all(void)
+// {
+        // chunk_t *n, *tmp;
 
-        mutex_lock(&chunk_list.mtx);
-        list_for_each_entry_safe(n, tmp, &chunk_list.list, list) {
-            nvdimm_free_by_chunk_addr(n, 0);
-        }
-        mutex_unlock(&chunk_list.mtx);
-}
-#endif
+        // mutex_lock(&chunk_list.mtx);
+        // list_for_each_entry_safe(n, tmp, &chunk_list.list, list) {
+            // nvdimm_free_by_chunk_addr(n, 0);
+        // }
+        // mutex_unlock(&chunk_list.mtx);
+// }
+// #endif
 /* --- chunk API end --- */
 
 int nvdimm_dev_probe(struct platform_device *pdev)
@@ -142,16 +142,16 @@ int nvdimm_dev_probe(struct platform_device *pdev)
 
 #if 1
         nvdimm_recover();
-#if 0
-        chunk_t *chunk, *tmp;
-        struct list_head *head = nvdimm_get_list_head();
+// #if 0
+        // chunk_t *chunk, *tmp;
+        // struct list_head *head = nvdimm_get_list_head();
 
-        list_for_each_entry_safe(chunk, tmp, head, list) {
-            u32 l = readl(chunk_get_data_addr(chunk));
-            printk("data %x\n", l);
-            chunk_utilize(chunk);
-        }
-#endif
+        // list_for_each_entry_safe(chunk, tmp, head, list) {
+            // u32 l = readl(chunk_get_data_addr(chunk));
+            // printk("data %x\n", l);
+            // chunk_utilize(chunk);
+        // }
+// #endif
 #endif
 
         return 0;
@@ -174,6 +174,10 @@ int nvdimm_dev_remove(struct platform_device *pdev)
 }
 
 void nvdimm_dev_release(struct device *dev)
+{
+}
+
+void nvdimm_rsv_dev_release(struct device *dev)
 {
 }
 

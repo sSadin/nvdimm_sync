@@ -13,6 +13,7 @@ enum {
 extern int nvdimm_dev_probe(struct platform_device *);
 extern int nvdimm_dev_remove(struct platform_device *);
 extern void nvdimm_dev_release(struct device *);
+extern void nvdimm_rsv_dev_release(struct device *);
 
 struct platform_device nvdimm_dev = {
         .name = KBUILD_MODNAME,
@@ -25,7 +26,24 @@ struct platform_device nvdimm_dev = {
                 {
                         .name = "baum_nvdimm",
                         .start = 0x1080000000,
-                        .end = 0x127fffffff,
+                        .end = 0x93FFFFFFF // 0x127fffffff, // 940000000
+                        .flags = IORESOURCE_MEM
+                }
+        }
+};
+
+struct platform_device nvdimm_dev_rsv = {
+        .name = KBUILD_MODNAME "_rsv",
+        .id = PLATFORM_DEVID_NONE "_rsv",
+        .dev = {
+                .release = nvdimm_rsv_dev_release,
+        },
+        .num_resources = 1,
+        .resource = (struct resource []) {
+                {
+                        .name = "baum_nvdimm_rsv",
+                        .start = 940000000,
+                        .end = 0x127fffffff // 0x127fffffff, // 940000000
                         .flags = IORESOURCE_MEM
                 }
         }
@@ -39,22 +57,29 @@ struct platform_driver nvdimm_drv = {
         }
 };
 
+struct platform_driver nvdimm_drv_rsv = {
+        .probe = nvdimm_dev_probe,
+        .remove = nvdimm_dev_remove,
+        .driver = {
+                .name = KBUILD_MODNAME "_rsv",
+        }
+};
+
 struct priv {
         struct resource *res;
         struct platform_device *pdev;
         u8 repaired;
 } _priv = { 0 }, *priv = &_priv;
 
-#if 0
-#define CHUNK_MAGIC 0xdeadbeef
-
-typedef struct chunk {
-        u32 magic;
-        dma_addr_t paddr;
-        size_t size;
-        struct list_head list;
-} chunk_t;
-#endif
+// #if 0
+// #define CHUNK_MAGIC 0xdeadbeef
+// typedef struct chunk {
+        // u32 magic;
+        // dma_addr_t paddr;
+        // size_t size;
+        // struct list_head list;
+// } chunk_t;
+// #endif
 
 struct chunk_list {
         struct mutex mtx;
