@@ -34,7 +34,7 @@ struct platform_device nvdimm_dev = {
 
 struct platform_device nvdimm_dev_rsv = {
         .name = KBUILD_MODNAME "_rsv",
-        .id = PLATFORM_DEVID_NONE "_rsv",
+        .id = PLATFORM_DEVID_NONE,
         .dev = {
                 .release = nvdimm_rsv_dev_release,
         },
