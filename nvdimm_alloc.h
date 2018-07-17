@@ -28,7 +28,8 @@ struct platform_device nvdimm_dev = {
                 {
                         .name = "baum_nvdimm",
                         .start = 0x1080000000,
-                        .end = 0x93FFFFFFF, // 0x127fffffff, // 940000000
+                        .end = 0x117FFFFFFF, // 0x127fffffff, //
+                                               
                         .flags = IORESOURCE_MEM
                 }
         }
@@ -44,8 +45,8 @@ struct platform_device nvdimm_dev_rsv = {
         .resource = (struct resource []) {
                 {
                         .name = "baum_nvdimm_rsv",
-                        .start = 940000000,
-                        .end = 0x127fffffff, // 0x127fffffff, // 940000000
+                        .start = 0x1180000000,
+                        .end = 0x127fffffff, // 0x127fffffff, //
                         .flags = IORESOURCE_MEM
                 }
         }

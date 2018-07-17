@@ -11,7 +11,8 @@
 #include <linux/pmem.h>
 #include "nvdimm_alloc.h"
 
-#define DRV KBUILD_MODNAME ": "
+#define DRV     KBUILD_MODNAME ": "
+#define DRV_RSV KBUILD_MODNAME "_RSV: "
 
 #ifdef DEBUG
 #define dbg(fmt, ...) printk(DRV fmt, ##__VA_ARGS__)
@@ -108,6 +109,7 @@ int nvdimm_dev_probe(struct platform_device *pdev)
         struct resource *mem;
         struct device *dev = &pdev->dev;
 
+printk("nvdimm_dev_probe\n");
         mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
         if (!mem) {
                 dev_err(dev, "platform_get_resource err\n");
@@ -350,6 +352,20 @@ static int __init nvdimm_drv_init(void)
         }
 
         printk(DRV "loaded\n");
+
+        ret = platform_driver_register(&nvdimm_drv_rsv);
+        if (ret) {
+                printk("platform_driver_register (rsv) ret %d\n", ret);
+                goto err_driver_register;
+        }
+
+        ret = platform_device_register(&nvdimm_dev_rsv);
+        if (ret) {
+                printk("platform_device_register (rsv) ret %d\n", ret);
+                platform_driver_unregister(&nvdimm_drv_rsv);
+                goto err_driver_register;
+        }
+        printk(DRV_RSV "loaded\n");        
 
         return 0;
 
