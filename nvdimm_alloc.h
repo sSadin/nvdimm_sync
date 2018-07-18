@@ -25,7 +25,7 @@ struct platform_device nvdimm_dev = {
                 {
                         .name = "baum_nvdimm",
                         .start = 0x1080000000,
-                        .end = 0x127fffffff,
+                        .end = 0x117fffffff,//0x127fffffff,//
                         .flags = IORESOURCE_MEM
                 }
         }
