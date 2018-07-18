@@ -21,10 +21,6 @@
 
 static unsigned long nvdimm_usage = 0;
 
-// #if 0
-// void nvdimm_recover(void);
-// struct list_head *nvdimm_get_list_head(void);
-// #endif
 
 /* --- chunk API start --- */
 void *chunk_get_data_addr(chunk_t *chunk)
@@ -33,10 +29,12 @@ void *chunk_get_data_addr(chunk_t *chunk)
 }
 EXPORT_SYMBOL(chunk_get_data_addr);
 
+
 static size_t chunk_real_size(chunk_t *chunk)
 {
     return chunk->size + sizeof(chunk_t);
 }
+
 
 chunk_t *chunk_find(void *addr)
 {
@@ -55,6 +53,7 @@ chunk_t *chunk_find(void *addr)
 }
 EXPORT_SYMBOL(chunk_find);
 
+
 static void chunk_add(chunk_t *chunk)
 {
   mutex_lock(&chunk_list.mtx);
@@ -63,6 +62,7 @@ static void chunk_add(chunk_t *chunk)
     nvdimm_usage += PAGE_ALIGN(chunk_real_size(chunk));
   mutex_unlock(&chunk_list.mtx);
 }
+
 
 void chunk_delete(chunk_t *chunk)
 {
@@ -80,6 +80,7 @@ void chunk_delete(chunk_t *chunk)
 }
 EXPORT_SYMBOL(chunk_delete);
 
+
 void chunk_delete_locked(chunk_t *chunk)
 {
   mutex_lock(&chunk_list.mtx);
@@ -88,19 +89,6 @@ void chunk_delete_locked(chunk_t *chunk)
 }
 EXPORT_SYMBOL(chunk_delete_locked);
 
-// #if 0 // not used
-// static void chunk_delete_all(void)
-// {
-        // chunk_t *n, *tmp;
-
-        // mutex_lock(&chunk_list.mtx);
-        // list_for_each_entry_safe(n, tmp, &chunk_list.list, list) {
-            // nvdimm_free_by_chunk_addr(n, 0);
-        // }
-        // mutex_unlock(&chunk_list.mtx);
-// }
-// #endif
-/* --- chunk API end --- */
 
 int nvdimm_dev_probe(struct platform_device *pdev)
 {
@@ -142,16 +130,6 @@ int nvdimm_dev_probe(struct platform_device *pdev)
 
 #if 1
   nvdimm_recover();
-// #if 0
-        // chunk_t *chunk, *tmp;
-        // struct list_head *head = nvdimm_get_list_head();
-
-        // list_for_each_entry_safe(chunk, tmp, head, list) {
-            // u32 l = readl(chunk_get_data_addr(chunk));
-            // printk("data %x\n", l);
-            // chunk_utilize(chunk);
-        // }
-// #endif
 #endif
 
   return 0;
@@ -163,6 +141,7 @@ err_devm_kzalloc:
   return ret;
 }
 
+
 int nvdimm_dev_remove(struct platform_device *pdev)
 {
   //chunk_delete_all();
@@ -173,15 +152,36 @@ int nvdimm_dev_remove(struct platform_device *pdev)
   return 0;
 }
 
+
 void nvdimm_dev_release(struct device *dev)
 {
 }
+
+
+int nvdimm_rsv_dev_probe(struct platform_device *pdev)
+{
+  int ret = 0;
+  return ret;
+}
+
+
+int nvdimm_rsv_dev_remove(struct platform_device *pdev)
+{
+  return 0;
+}
+
+
+void nvdimm_rsv_dev_release(struct device *dev)
+{
+}
+
 
 u8 nvdimm_recovered(void)
 {
   return priv->repaired;
 }
 EXPORT_SYMBOL(nvdimm_recovered);
+
 
 void nvdimm_recover(void)
 {
@@ -215,6 +215,7 @@ void nvdimm_recover(void)
 }
 EXPORT_SYMBOL(nvdimm_recover);
 
+
 void *nvdimm_alloc(size_t size, int flags)
 {
   void *addr;
@@ -244,6 +245,7 @@ void *nvdimm_alloc(size_t size, int flags)
 }
 EXPORT_SYMBOL(nvdimm_alloc);
 
+
 void nvdimm_free_by_chunk_addr(chunk_t *chunk, bool locked)
 {
   struct device *dev = &priv->pdev->dev;
@@ -266,6 +268,7 @@ void nvdimm_free_by_chunk_addr(chunk_t *chunk, bool locked)
 }
 EXPORT_SYMBOL(nvdimm_free_by_chunk_addr);
 
+
 void nvdimm_free_by_data_addr(void *addr, bool locked)
 {
   chunk_t *chunk = NULL;
@@ -280,6 +283,7 @@ void nvdimm_free_by_data_addr(void *addr, bool locked)
 }
 EXPORT_SYMBOL(nvdimm_free_by_data_addr);
 
+
 // get percentage of available space
 unsigned short nvdimm_percentage(void)
 {
@@ -287,11 +291,13 @@ unsigned short nvdimm_percentage(void)
 }
 EXPORT_SYMBOL(nvdimm_percentage);
 
+
 struct list_head *nvdimm_get_list_head(void)
 {
   return &chunk_list.list;
 }
 EXPORT_SYMBOL(nvdimm_get_list_head);
+
 
 void nvdimm_list_mutex_lock(void)
 {
@@ -299,11 +305,13 @@ void nvdimm_list_mutex_lock(void)
 }
 EXPORT_SYMBOL(nvdimm_list_mutex_lock);
 
+
 void nvdimm_list_mutex_unlock(void)
 {
   mutex_unlock(&chunk_list.mtx);
 }
 EXPORT_SYMBOL(nvdimm_list_mutex_unlock);
+
 
 static int __init nvdimm_drv_init(void)
 {
@@ -330,6 +338,7 @@ err_driver_register:
   return ret;
 }
 
+
 static void __exit nvdimm_drv_exit(void)
 {
   platform_device_unregister(&nvdimm_dev);
@@ -338,8 +347,10 @@ static void __exit nvdimm_drv_exit(void)
   printk(DRV "unloaded\n");
 }
 
+
 module_init(nvdimm_drv_init);
 module_exit(nvdimm_drv_exit);
+
 
 MODULE_AUTHOR("Sergey Katyshev <s.katyshev@npobaum.ru, perplexus@ya.ru>");
 MODULE_LICENSE("Dual BSD/GPL");

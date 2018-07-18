@@ -14,6 +14,10 @@ extern int nvdimm_dev_probe(struct platform_device *);
 extern int nvdimm_dev_remove(struct platform_device *);
 extern void nvdimm_dev_release(struct device *);
 
+extern int nvdimm_rsv_dev_probe(struct platform_device *);
+extern int nvdimm_rsv_dev_remove(struct platform_device *);
+extern void nvdimm_rsv_dev_release(struct device *);
+
 struct platform_device nvdimm_dev = {
         .name = KBUILD_MODNAME,
         .id = PLATFORM_DEVID_NONE,
@@ -34,6 +38,32 @@ struct platform_device nvdimm_dev = {
 struct platform_driver nvdimm_drv = {
         .probe = nvdimm_dev_probe,
         .remove = nvdimm_dev_remove,
+        .driver = {
+                .name = KBUILD_MODNAME,
+        }
+};
+
+
+struct platform_device nvdimm_dev_rsv = {
+        .name = KBUILD_MODNAME"_RSV",
+        .id = PLATFORM_DEVID_NONE,
+        .dev = {
+                .release = nvdimm_rsv_dev_release,
+        },
+        .num_resources = 1,
+        .resource = (struct resource []) {
+                {
+                        .name = "baum_nvdimm_rsv",
+                        .start = 0x1180000000,
+                        .end = 0x127fffffff,//0x117fffffff,//
+                        .flags = IORESOURCE_MEM
+                }
+        }
+};
+
+struct platform_driver nvdimm_drv_rsv = {
+        .probe = nvdimm_rsv_dev_probe,
+        .remove = nvdimm_rsv_dev_remove,
         .driver = {
                 .name = KBUILD_MODNAME,
         }
