@@ -1,6 +1,6 @@
 KDIR = /lib/modules/$(shell uname -r)/build
 
-obj-m := nvdimm_alloc.o
+obj-m := nvdimm_alloc.o rdma_init.o
 
 default: clean
 	make -C $(KDIR) M=$(shell pwd) modules

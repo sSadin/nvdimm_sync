@@ -1,11 +1,12 @@
-typedef struct chunk {
-        u32 magic;
-        u8 recovered;		// TODO: make union for flags recovered and sync_state
-        u8 sync_state;		// flag: locked for RDMA operation ? saved
-        dma_addr_t paddr;
-        size_t size;
-        struct list_head list;
-} chunk_t;
+/*
+// typedef struct chunk {
+  // u32 magic;
+  // u8 recovered;		// TODO: make union for flags recovered and sync_state
+  // u8 sync_state;		// flag: locked for RDMA operation ? saved
+  // dma_addr_t paddr;
+  // size_t size;
+  // struct list_head list;
+// } chunk_t;
 
 enum {
 	rmda_chunk_new = 0,
@@ -49,3 +50,4 @@ rdma_chunk_send(void *mem, size_t size) {
   ;
 }
 
+*/

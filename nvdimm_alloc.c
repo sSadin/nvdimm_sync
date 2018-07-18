@@ -1,3 +1,5 @@
+#include "rdma_nvdimm.h"
+
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/dma-mapping.h>
@@ -347,6 +349,7 @@ static int __init nvdimm_drv_init(void)
   }
 
   printk(DRV_RSV "loaded\n");
+  printing();
 
   return 0;
 

@@ -1,21 +1,25 @@
 // #include <netdb.h>
 // #include <stdio.h>
 // #include <stdlib.h>
-// #include <string.h>
+#include <string.h>
 // #include <unistd.h>
-#include <rdma/rdma_cma.h>
+#include </usr/include/rdma/rdma_cma.h>
 
 #define TEST_NZ(x) do { if ( (x)) die("error: " #x " failed (returned non-zero)." ); } while (0)
 #define TEST_Z(x)  do { if (!(x)) die("error: " #x " failed (returned zero/null)."); } while (0)
 
- struct context {
+void printing() {
+  printk("Hello world!");
+}
+/*
+  struct context {
   struct ibv_context *ctx;
   struct ibv_pd *pd;
   struct ibv_cq *cq;
   struct ibv_comp_channel *comp_channel;
   struct connection *conn;
 
-  pthread_t cq_poller_thread;
+  //pthread_t cq_poller_thread;
 };
 
 struct connection {
@@ -80,7 +84,7 @@ void rdma_init(const char* ip, const char *port) {
     s_ctx->ctx = verbs;
     TEST_Z(s_ctx->pd = ibv_alloc_pd(s_ctx->ctx));
     TEST_Z(s_ctx->comp_channel = ibv_create_comp_channel(s_ctx->ctx));
-    TEST_Z(s_ctx->cq = ibv_create_cq(s_ctx->ctx, 10, NULL, s_ctx->comp_channel, 0)); /* cqe=10 is arbitrary */
+    TEST_Z(s_ctx->cq = ibv_create_cq(s_ctx->ctx, 10, NULL, s_ctx->comp_channel, 0)); // cqe=10 is arbitrary
     TEST_NZ(ibv_req_notify_cq(s_ctx->cq, 0));
 //    TEST_NZ(pthread_create(&s_ctx->cq_poller_thread, NULL, poll_cq, NULL));
   }
@@ -115,7 +119,7 @@ void rdma_init(const char* ip, const char *port) {
 // void register_memory(struct connection *conn)
 // {
   conn->send_region = nvdimm_alloc(BUFFER_SIZE, GFP_KERNEL);
-  /* conn->recv_region = nvdimm_alloc(BUFFER_SIZE, GFP_KERNEL); */
+  // conn->recv_region = nvdimm_alloc(BUFFER_SIZE, GFP_KERNEL);
 
   TEST_Z(conn->send_mr = ibv_reg_mr(
     s_ctx->pd, 
@@ -123,33 +127,32 @@ void rdma_init(const char* ip, const char *port) {
     BUFFER_SIZE, 
     IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 
-  /* TEST_Z(conn->recv_mr = ibv_reg_mr(
-    s_ctx->pd, 
-    conn->recv_region, 
-    BUFFER_SIZE, 
-    IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE)); */
+  // TEST_Z(conn->recv_mr = ibv_reg_mr(
+    // s_ctx->pd, 
+    // conn->recv_region, 
+    // BUFFER_SIZE, 
+    // IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_WRITE));
 // }
 
 
-/*
-// post_receives(conn);
-// void post_receives(struct connection *conn)
-// {
-  struct ibv_recv_wr wr, *bad_wr = NULL;
-  struct ibv_sge sge;
 
-  wr.wr_id = (uintptr_t)&conn;
-  wr.next = NULL;
-  wr.sg_list = &sge;
-  wr.num_sge = 1;
+//// post_receives(conn);
+//// void post_receives(struct connection *conn)
+//// {
+  // struct ibv_recv_wr wr, *bad_wr = NULL;
+  // struct ibv_sge sge;
 
-  sge.addr = (uintptr_t)conn.recv_region;
-  sge.length = BUFFER_SIZE;
-  sge.lkey = conn.recv_mr->lkey;
+  // wr.wr_id = (uintptr_t)&conn;
+  // wr.next = NULL;
+  // wr.sg_list = &sge;
+  // wr.num_sge = 1;
 
-  TEST_NZ(ibv_post_recv(conn.qp, &wr, &bad_wr));
-// }
-*/
+  // sge.addr = (uintptr_t)conn.recv_region;
+  // sge.length = BUFFER_SIZE;
+  // sge.lkey = conn.recv_mr->lkey;
+
+  // TEST_NZ(ibv_post_recv(conn.qp, &wr, &bad_wr));
+//// }
 
 
   TEST_NZ(rdma_resolve_route(event.id, TIMEOUT_IN_MS));
@@ -199,7 +202,8 @@ void rdma_init(const char* ip, const char *port) {
 // on_connection(event->id->context);
 // int on_connection(void *context)
 // {
-  /* struct connection * */conn = (struct connection *)event.id->context;
+  // struct connection * 
+        conn = (struct connection *)event.id->context;
   struct ibv_send_wr wr, *bad_wr = NULL;
   struct ibv_sge sge;
 
@@ -242,3 +246,5 @@ void rdma_init(const char* ip, const char *port) {
 
 
 }
+*/
+
