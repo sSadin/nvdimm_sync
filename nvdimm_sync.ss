@@ -1,0 +1,12 @@
+<NotepadPlus>
+    <Session activeView="0">
+        <mainView activeIndex="4">
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="536" startPos="0" endPos="0" selMode="0" lang="C" encoding="-1" filename="D:\WM_hdd\Shared\git\nvdimm_sync\nvdimm_alloc.c" backupFilePath="" originalFileLastModifTimestamp="1530883858" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="-497981620" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="536" startPos="0" endPos="0" selMode="0" lang="C++" encoding="-1" filename="D:\WM_hdd\Shared\git\nvdimm_sync\nvdimm_alloc.h" backupFilePath="" originalFileLastModifTimestamp="1531122600" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="-497981620" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="536" startPos="0" endPos="0" selMode="0" lang="C++" encoding="-1" filename="D:\WM_hdd\Shared\git\nvdimm_sync\nvdimm_export.h" backupFilePath="" originalFileLastModifTimestamp="1531205954" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="-497981620" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="800" startPos="0" endPos="0" selMode="0" lang="C" encoding="-1" filename="D:\WM_hdd\Shared\git\nvdimm_sync\rdma_sync.c" backupFilePath="" originalFileLastModifTimestamp="1531241556" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="-497981620" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="0" xOffset="0" scrollWidth="800" startPos="0" endPos="0" selMode="0" lang="C" encoding="-1" filename="D:\WM_hdd\Shared\git\nvdimm_sync\rdma_init.c" backupFilePath="" originalFileLastModifTimestamp="1531242892" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="-497981620" mapWrapIndentMode="-1" mapIsWrap="no" />
+        </mainView>
+        <subView activeIndex="0" />
+    </Session>
+</NotepadPlus>
