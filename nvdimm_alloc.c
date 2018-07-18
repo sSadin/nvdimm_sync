@@ -11,7 +11,8 @@
 #include <linux/pmem.h>
 #include "nvdimm_alloc.h"
 
-#define DRV KBUILD_MODNAME ": "
+#define DRV     KBUILD_MODNAME ": "
+#define DRV_RSV KBUILD_MODNAME "_RSV: "
 
 #ifdef DEBUG
 #define dbg(fmt, ...) printk(DRV fmt, ##__VA_ARGS__)
@@ -332,6 +333,21 @@ static int __init nvdimm_drv_init(void)
 
   printk(DRV "loaded\n");
 
+  ret = platform_driver_register(&nvdimm_drv_rsv);
+  if (ret) {
+    printk("_rsv platform_driver_register ret %d\n", ret);
+    goto err_driver_register;
+  }
+
+  ret = platform_device_register(&nvdimm_dev_rsv);
+  if (ret) {
+    printk("_rsv platform_device_register ret %d\n", ret);
+    platform_driver_unregister(&nvdimm_drv_rsv);
+    goto err_driver_register;
+  }
+
+  printk(DRV_RSV "loaded\n");
+
   return 0;
 
 err_driver_register:
@@ -345,6 +361,11 @@ static void __exit nvdimm_drv_exit(void)
   platform_driver_unregister(&nvdimm_drv);
 
   printk(DRV "unloaded\n");
+
+  platform_device_unregister(&nvdimm_dev_rsv);
+  platform_driver_unregister(&nvdimm_drv_rsv);
+
+  printk(DRV_RSV "unloaded\n");
 }
 
 

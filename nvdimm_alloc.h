@@ -65,7 +65,7 @@ struct platform_driver nvdimm_drv_rsv = {
         .probe = nvdimm_rsv_dev_probe,
         .remove = nvdimm_rsv_dev_remove,
         .driver = {
-                .name = KBUILD_MODNAME,
+                .name = KBUILD_MODNAME"_RSV",
         }
 };
 
