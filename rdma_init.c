@@ -42,8 +42,16 @@ void die(const char *reason)
 
 static struct context *s_ctx = NULL;
 
-/*
-void rdma_init(const char* ip, const char *port) {
+#define NVDIMM_RDMA_RSV_IP    "172.16.11.34"
+#define NVDIMM_RDMA_RSV_PORT  "54455"
+
+void rdma_init(void) {
+  _rdma_init(NVDIMM_RDMA_RSV_IP, NVDIMM_RDMA_RSV_PORT);
+  return;
+}
+
+
+void _rdma_init(const char* ip, const char *port) {
 
   struct addrinfo *addr;
   struct rdma_cm_event event,*_event = NULL;
@@ -61,18 +69,22 @@ void rdma_init(const char* ip, const char *port) {
 //-------------------------------------------------------------
 
 // TODO: remove cycle!
-  while (rdma_get_cm_event(ec, &_event) == 0) {
+  //while (0) {
+    rdma_get_cm_event(ec, &_event) == 0) {
 
     memcpy(&event, _event, sizeof(*_event));
     rdma_ack_cm_event(_event);
 
     if (event.event == RDMA_CM_EVENT_ADDR_RESOLVED) {
-      printf("RDMA_CM_EVENT_ADDR_RESOLVED\n");
-      break;
+      printk(DRV_RDMA "RDMA_CM_EVENT_ADDR_RESOLVED\n");
+      //break;
     }
-  }
+  //}
+    else {
+      printk(DRV_RDMA "NOT !!! RDMA_CM_EVENT_ADDR_RESOLVED\n");
+    }
 
-
+/*
 //  on_addr_resolved(event.id);
 // int on_addr_resolved(struct rdma_cm_id *id)
 // {

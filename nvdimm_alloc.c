@@ -348,7 +348,7 @@ static int __init nvdimm_drv_init(void)
   }
 
   printk(DRV_RSV "loaded\n");
-  printing();
+  rdma_init();
 
   return 0;
 
