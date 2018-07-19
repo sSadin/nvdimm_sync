@@ -1,5 +1,3 @@
-#include "rdma_nvdimm.h"
-
 #include <linux/module.h>
 #include <linux/platform_device.h>
 #include <linux/dma-mapping.h>
@@ -12,6 +10,7 @@
 #include <linux/types.h>
 #include <linux/pmem.h>
 #include "nvdimm_alloc.h"
+#include "rdma_nvdimm.h"
 
 #define DRV     KBUILD_MODNAME ": "
 #define DRV_RSV KBUILD_MODNAME "_RSV: "

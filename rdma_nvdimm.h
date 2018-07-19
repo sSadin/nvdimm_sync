@@ -1,2 +1,6 @@
+#ifndef __RDMA_NVDIMM_H__
+#define __RDMA_NVDIMM_H__
 
-void printing();
+extern void printing(void);
+
+#endif

@@ -1,14 +1,14 @@
 // #include <netdb.h>
 // #include <stdio.h>
 // #include <stdlib.h>
-#include <string.h>
+#include <linux/module.h>
 // #include <unistd.h>
-#include </usr/include/rdma/rdma_cma.h>
+#include <rdma/rdma_cm.h>
 
 #define TEST_NZ(x) do { if ( (x)) die("error: " #x " failed (returned non-zero)." ); } while (0)
 #define TEST_Z(x)  do { if (!(x)) die("error: " #x " failed (returned zero/null)."); } while (0)
 
-void printing() {
+void printing(void) {
   printk("Hello world!");
 }
 /*
