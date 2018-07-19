@@ -5,8 +5,8 @@
 // #include <unistd.h>
 #include <rdma/rdma_cm.h>
 
-#define TEST_NZ(x) do { if ( (x)) die("error: " #x " failed (returned non-zero)." ); } while (0)
-#define TEST_Z(x)  do { if (!(x)) die("error: " #x " failed (returned zero/null)."); } while (0)
+#define TEST_NZ(x) do { if ( (x)) return die("error: " #x " failed (returned non-zero)." ); } while (0)
+#define TEST_Z(x)  do { if (!(x)) return die("error: " #x " failed (returned zero/null)."); } while (0)
 
 #define DRV_RDMA KBUILD_MODNAME "_rdma: "
 
@@ -33,10 +33,10 @@ struct connection {
 };
 
 
-void die(const char *reason)
+int die(const char *reason)
 {
   printk(DRV_RDMA "%s\n", reason);
-  exit(EXIT_FAILURE);
+  return(-1);
 }
 
 
@@ -45,13 +45,12 @@ static struct context *s_ctx = NULL;
 #define NVDIMM_RDMA_RSV_IP    "172.16.11.34"
 #define NVDIMM_RDMA_RSV_PORT  "54455"
 
-void rdma_init(void) {
-  _rdma_init(NVDIMM_RDMA_RSV_IP, NVDIMM_RDMA_RSV_PORT);
-  return;
+int rdma_init(void) {
+  return _rdma_init(NVDIMM_RDMA_RSV_IP, NVDIMM_RDMA_RSV_PORT);
 }
 
 
-void _rdma_init(const char* ip, const char *port) {
+int _rdma_init(const char* ip, const char *port) {
 
   struct addrinfo *addr;
   struct rdma_cm_event event,*_event = NULL;
@@ -81,8 +80,9 @@ void _rdma_init(const char* ip, const char *port) {
     }
   //}
     else {
-      printk(DRV_RDMA "NOT !!! RDMA_CM_EVENT_ADDR_RESOLVED\n");
+      die("NOT !!! RDMA_CM_EVENT_ADDR_RESOLVED\n");
     }
+    return 0;
 
 /*
 //  on_addr_resolved(event.id);
