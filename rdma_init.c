@@ -8,19 +8,22 @@
 #define TEST_NZ(x) do { if ( (x)) die("error: " #x " failed (returned non-zero)." ); } while (0)
 #define TEST_Z(x)  do { if (!(x)) die("error: " #x " failed (returned zero/null)."); } while (0)
 
-void printing(void) {
-  printk("Hello world!");
-}
-/*
-  struct context {
-  struct ibv_context *ctx;
-  struct ibv_pd *pd;
-  struct ibv_cq *cq;
-  struct ibv_comp_channel *comp_channel;
-  struct connection *conn;
+#define DRV_RDMA KBUILD_MODNAME "_rdma: "
 
-  //pthread_t cq_poller_thread;
+
+void printing(void) {
+  printk(DRV_RDMA "Hello world!");
+}
+
+struct context {
+  struct ibv_context      *ctx;
+  struct ibv_pd           *pd;
+  struct ibv_cq           *cq;
+  struct ibv_comp_channel *comp_channel;
+  struct connection       *conn;
+  //pthread_t               cq_poller_thread;
 };
+
 
 struct connection {
   struct rdma_cm_id   *id;
@@ -29,14 +32,17 @@ struct connection {
   char                *send_region;
 };
 
+
 void die(const char *reason)
 {
-  dprintf("%s\n", reason);
+  printk(DRV_RDMA "%s\n", reason);
   exit(EXIT_FAILURE);
 }
 
+
 static struct context *s_ctx = NULL;
 
+/*
 void rdma_init(const char* ip, const char *port) {
 
   struct addrinfo *addr;

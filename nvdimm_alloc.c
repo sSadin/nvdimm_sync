@@ -13,7 +13,7 @@
 #include "rdma_nvdimm.h"
 
 #define DRV     KBUILD_MODNAME ": "
-#define DRV_RSV KBUILD_MODNAME "_RSV: "
+#define DRV_RSV KBUILD_MODNAME "_rsv: "
 
 #ifdef DEBUG
 #define dbg(fmt, ...) printk(DRV fmt, ##__VA_ARGS__)
