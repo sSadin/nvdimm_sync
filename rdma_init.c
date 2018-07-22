@@ -1,20 +1,56 @@
 // #include <netdb.h>
 // #include <stdio.h>
 // #include <stdlib.h>
-#include <linux/module.h>
 // #include <unistd.h>
 #include <rdma/rdma_cm.h>
+#include <rdma/ib_verbs.h>
+#include "log.h"
 
-#define TEST_NZ(x) do { if ( (x)) return die("error: " #x " failed (returned non-zero)." ); } while (0)
-#define TEST_Z(x)  do { if (!(x)) return die("error: " #x " failed (returned zero/null)."); } while (0)
+// #define TEST_NZ(x) do { if ( (x)) return die("error: " #x " failed (returned non-zero)." ); } while (0)
+// #define TEST_Z(x)  do { if (!(x)) return die("error: " #x " failed (returned zero/null)."); } while (0)
 
 #define DRV_RDMA KBUILD_MODNAME "_rdma: "
+#define NVDIMM_RDMA_RSV_IP    "172.16.11.34"
+#define NVDIMM_RDMA_RSV_PORT  "54455"
 
+static int devices_seen = 0;
+struct ib_client rdma_master;
 
-void printing(void) {
-  printk(DRV_RDMA "Hello world!");
+int die(const char *reason)
+{
+  printk(DRV_RDMA "%s\n", reason);
+  return(-1);
 }
 
+
+int rdma_init(void) {
+  return _rdma_init(NVDIMM_RDMA_RSV_IP, NVDIMM_RDMA_RSV_PORT);
+}
+
+
+void add_device(struct ib_device* dev)
+{
+    LOG_KERN(LOG_INFO, ("We got a new device! %d\n ", devices_seen));
+}
+
+
+void remove_device(struct ib_device* dev)
+{
+    LOG_KERN(LOG_INFO, ("remove_device\n "));
+}
+
+
+int _rdma_init(const char* ip, const char *port) {
+  // struct ibv_device **dev_list;
+  // struct ibv_device *ib_dev;
+  rdma_master.name = "BAUM_NVDIMM_RDMA";
+  rdma_master.add = add_device;
+  rdma_master.remove = remove_device;
+
+  ib_register_client(&rdma_master);
+}
+
+/*
 struct context {
   struct ibv_context      *ctx;
   struct ibv_pd           *pd;
@@ -33,22 +69,7 @@ struct connection {
 };
 
 
-int die(const char *reason)
-{
-  printk(DRV_RDMA "%s\n", reason);
-  return(-1);
-}
-
-
 static struct context *s_ctx = NULL;
-
-#define NVDIMM_RDMA_RSV_IP    "172.16.11.34"
-#define NVDIMM_RDMA_RSV_PORT  "54455"
-
-int rdma_init(void) {
-  return _rdma_init(NVDIMM_RDMA_RSV_IP, NVDIMM_RDMA_RSV_PORT);
-}
-
 
 int _rdma_init(const char* ip, const char *port) {
 
@@ -84,7 +105,7 @@ int _rdma_init(const char* ip, const char *port) {
     }
     return 0;
 
-/*
+
 //  on_addr_resolved(event.id);
 // int on_addr_resolved(struct rdma_cm_id *id)
 // {
