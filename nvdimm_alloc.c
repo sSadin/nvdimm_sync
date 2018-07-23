@@ -366,6 +366,8 @@ static void __exit nvdimm_drv_exit(void)
 
   platform_device_unregister(&nvdimm_dev_rsv);
   platform_driver_unregister(&nvdimm_drv_rsv);
+  
+  rdma_unregister();
 
   printk(DRV_RSV "unloaded\n");
 }

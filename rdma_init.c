@@ -9,22 +9,26 @@
 // #define TEST_NZ(x) do { if ( (x)) return die("error: " #x " failed (returned non-zero)." ); } while (0)
 // #define TEST_Z(x)  do { if (!(x)) return die("error: " #x " failed (returned zero/null)."); } while (0)
 
-#define DRV_RDMA KBUILD_MODNAME "_rdma: "
 #define NVDIMM_RDMA_RSV_IP    "172.16.11.34"
 #define NVDIMM_RDMA_RSV_PORT  "54455"
 
+
+void add_device(struct ib_device* dev);
+void remove_device(struct ib_device* dev);
+
+
 static int devices_seen = 0;
-struct ib_client rdma_master;
+struct ib_client rdma_master = {
+  .name   = "BAUM_NVDIMM_RDMA";
+  .add    = add_device;
+  .remove = remove_device;
+};
+
 
 int die(const char *reason)
 {
-  printk(DRV_RDMA "%s\n", reason);
+  LOG_KERN(LOG_INFO, ("%s\n", reason));
   return(-1);
-}
-
-
-int rdma_init(void) {
-  return _rdma_init(NVDIMM_RDMA_RSV_IP, NVDIMM_RDMA_RSV_PORT);
 }
 
 
@@ -43,12 +47,22 @@ void remove_device(struct ib_device* dev)
 int _rdma_init(const char* ip, const char *port) {
   // struct ibv_device **dev_list;
   // struct ibv_device *ib_dev;
-  rdma_master.name = "BAUM_NVDIMM_RDMA";
-  rdma_master.add = add_device;
-  rdma_master.remove = remove_device;
 
+  LOG_KERN(LOG_INFO, ("ib_register_client\n "));
   ib_register_client(&rdma_master);
 }
+
+
+int rdma_init(void) {
+  return _rdma_init(NVDIMM_RDMA_RSV_IP, NVDIMM_RDMA_RSV_PORT);
+}
+
+
+void rdma_unregister(void) {
+  LOG_KERN(LOG_INFO, (ib_unregister_client));
+  ib_unregister_client(rdma_master);
+}
+
 
 /*
 struct context {
